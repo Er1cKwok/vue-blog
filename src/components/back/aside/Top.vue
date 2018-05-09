@@ -1,48 +1,99 @@
 <template>
     <div>
-        <el-menu
-                :default-active="activeIndex2"
-                class="el-menu-demo"
-                mode="horizontal"
-                @select="handleSelect"
-                background-color="#545c64"
-                text-color="#fff"
-                active-text-color="#ffd04b">
-            <el-menu-item index="1">处理中心</el-menu-item>
-            <el-submenu index="2">
-                <template slot="title">我的工作台</template>
-                <el-menu-item index="2-1">选项1</el-menu-item>
-                <el-menu-item index="2-2">选项2</el-menu-item>
-                <el-menu-item index="2-3">选项3</el-menu-item>
-                <el-submenu index="2-4">
-                    <template slot="title">选项4</template>
-                    <el-menu-item index="2-4-1">选项1</el-menu-item>
-                    <el-menu-item index="2-4-2">选项2</el-menu-item>
-                    <el-menu-item index="2-4-3">选项3</el-menu-item>
-                </el-submenu>
-            </el-submenu>
-            <el-menu-item index="3" disabled>消息中心</el-menu-item>
-            <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
-        </el-menu>
+        <div class="logo" @click="isShow = !isShow">
+            <i class="el-icon-caret-bottom"></i>
+        </div>
+        <ul v-if="isShow">
+            <router-link
+                    v-for="(value,key) in nav"
+                    :key="key"
+                    :to="value.path"
+                    @click.native="isShow = false"
+                    tag="li">
+                {{value.text}}
+            </router-link>
+        </ul>
     </div>
 </template>
 
 <script>
     export default {
+        props:{
+            nav: {
+                type: Array,
+                required: true
+            }
+        },
         data() {
             return {
-                activeIndex: '1',
-                activeIndex2: '1'
+                isShow: false
             };
         },
-        methods: {
-            handleSelect(key, keyPath) {
-                console.log(key, keyPath);
-            }
+        created(){
+            document.addEventListener('click', (e) => {
+                if (!this.$el.contains(e.target)) this.isShow = false;
+            })
         }
     }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+
+    div{
+        position: relative;
+        top: 0;
+        left: 0;
+
+        .logo{
+            width: 40px;
+            border: 1px solid #fff;
+            border-radius: 3px;
+            height: 40px;
+            text-align: center;
+            position: absolute;
+            top: 5px;
+            left: 0;
+
+            i{
+                font-size: 40px;
+                color: rosybrown;
+                display: inline-block;
+            }
+
+            i:hover{
+                color: skyblue;
+                cursor: pointer;
+            }
+        }
+
+        ul{
+            width: 100px;
+            border: 1px solid #fff;
+            position: absolute;
+            top: 55px;
+            left: 0;
+            text-align: center;
+            border-radius: 5px;
+            z-index: 999;
+            background: #262626;
+
+            li:first-of-type{
+            }
+
+            li{
+                color: #E3EFFF;
+                line-height: 40px;
+                cursor: pointer;
+                border-bottom: 1px solid #ccc;
+            }
+
+            li:hover{
+                color: skyblue;
+            }
+        }
+    }
+
+
+
 
 </style>
